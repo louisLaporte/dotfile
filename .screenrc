@@ -1,19 +1,31 @@
 term xterm-256color
 # start at shell 1
-bind c screen 1
-bind ^c screen 1
-bind 0 select 10                                                            
+#bind c screen 1
+#bind ^c screen 1
+#bind 1 select 10                                                            
+#
+# change escape caractere
+escape ^a
+
 
 # set information in last line
-hardstatus off
+hardstatus on
+# Set the hardstatus prop on gui terms to set the titlebar/icon title
+termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
 hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{W} %c %{g}]'
-
-# start screen
-#  bash		|	htop
-#		|___________
-#		|	bash	
-screen -t MAIN 1 bash
+# black_green [ bold_red $HOSTNAME black_green ]
+#[]
+#[]
+#hardstatus string '%{=kg}[ %{+b b}%H - %S%{-b} %{=kg}]%{=kG}[%= %{=kw}%?%-Lw%?%{r}( %{B}%{n}*%f%t%?(%u)%?%{r} )%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{y} %C %A %{g}]'
+hardstatus string "%{= kG}%{g}[ %{B}$LOGNAME@%H%{g} - %n  ] [%= %{= kw}%?%-Lw%?%{B}( %n*%f%t%?(%u)%? )%{w}%?%+Lw%?%?%= %{g}] [ %{B}%c:%s%{g} ]"
+## MAIN layout 1
+## -------------------------------
+##  bash(*)	|	htop
+##		|----------------
+##		|	ssh pi	
+##--------------------------------			
+layout 'new' 0
+screen -t MAIN 0 bash
 select MAIN
 split -v
 focus right
@@ -21,7 +33,41 @@ screen -t HTOP 2 htop
 select HTOP
 split
 focus down
-screen -t BASH 3 bash
+screen -t PI 1 ssh pi
+focus left
+select MAIN
+
+# SCREEN  layout 2
+#---------------------------------
+#  info		|	vim 
+#  screen(*)	|	.screnrc
+#		|		
+#---------------------------------		
+layout 'new' 1
+screen -t INFO_SCREEN 3 info screen
+select INFO_SCREEN
+split -v
+focus right 
+screen -t SCREENRC 4 vim  $HOME/.screenrc
+select SCREENRC 
+focus left
+
+# INFO layout 3
+# -------------------------------
+#  info info	
+#--------------------------------				
+layout 'new' 2
+screen -t INFO_INFO 5 info info
+select INFO_INFO
+split -v
+focus right 
+screen -t BASH 6 bash
+select BASH
+
+#--------------------------------
+layout 'select' 1
+
+
 
 # shortcut for root c-a R
 bind R screen -t '% |root:' su
