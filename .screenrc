@@ -47,15 +47,15 @@ layout 'select' 0
 # shortcut for root c-a R
 bind R screen -t '% |root:' su
 
-bindkey "^c" screen 
-bindkey "^v" eval "split -v" "focus right"  
-bindkey "^s" eval "split" "focus down" 
-bindkey "^t" title
-bindkey "^d" detach
-bindkey "^k" kill
-bindkey "^q" quit
-bindkey "^x" remove
-bindkey "^o" only
+bindkey "^[c" screen 
+bindkey "^[v" eval "split -v" "focus right"  
+bindkey "^[s" eval "split" "focus down" 
+bindkey "^[t" title
+bindkey "^[d" detach
+bindkey "^[k" kill
+bindkey "^[q" quit
+bindkey "^[x" remove
+bindkey "^[o" only
 # ctrl arrow
 bindkey "^[[1;5D" focus left
 bindkey "^[[1;5C" focus right
