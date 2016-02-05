@@ -1,12 +1,9 @@
+shell -$SHELL
+
 term xterm-256color
-# start at shell 1
-#bind c screen 1
-#bind ^c screen 1
-#bind 1 select 10                                                            
 #
 # change escape caractere
 escape ^a
-
 
 # set information in last line
 hardstatus on
@@ -14,60 +11,58 @@ hardstatus on
 termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
 hardstatus alwayslastline
 # black_green [ bold_red $HOSTNAME black_green ]
-#[]
-#[]
-#hardstatus string '%{=kg}[ %{+b b}%H - %S%{-b} %{=kg}]%{=kG}[%= %{=kw}%?%-Lw%?%{r}( %{B}%{n}*%f%t%?(%u)%?%{r} )%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{y} %C %A %{g}]'
+
+#enable scrolling
+termcapinfo xterm* ti@:te@
+
 hardstatus string "%{= kG}%{g}[ %{B}$LOGNAME@%H%{g} - %n  ] [%= %{= kw}%?%-Lw%?%{B}( %n*%f%t%?(%u)%? )%{w}%?%+Lw%?%?%= %{g}] [ %{B}%c:%s%{g} ]"
-## MAIN layout 1
-## -------------------------------
-##  bash(*)	|	htop
-##		|----------------
-##		|	ssh pi	
-##--------------------------------			
+##################################################
+#		LAYOUT
+##################################################
+# Default layout
+#
 layout 'new' 0
 screen -t MAIN 0 bash
+# layout 1
+# -------------------------------
+#  bash(*)	|	htop
+#		|----------------
+#		|	ssh pi	
+#--------------------------------			
+layout 'new' 1
+screen -t MAIN_1 1 bash
 select MAIN
 split -v
 focus right
 screen -t HTOP 2 htop
 select HTOP
-split
-focus down
-screen -t PI 1 ssh pi
 focus left
-select MAIN
-
-# SCREEN  layout 2
-#---------------------------------
-#  info		|	vim 
-#  screen(*)	|	.screnrc
-#		|		
-#---------------------------------		
-layout 'new' 1
-screen -t INFO_SCREEN 3 info screen
-select INFO_SCREEN
-split -v
-focus right 
-screen -t SCREENRC 4 vim  $HOME/.screenrc
-select SCREENRC 
-focus left
-
-# INFO layout 3
-# -------------------------------
-#  info info	
-#--------------------------------				
-layout 'new' 2
-screen -t INFO_INFO 5 info info
-select INFO_INFO
-split -v
-focus right 
-screen -t BASH 6 bash
-select BASH
+select MAIN_1
 
 #--------------------------------
-layout 'select' 1
-
-
-
+layout 'select' 0
+####################################################
+#		BIND | BINDKEY
+####################################################
 # shortcut for root c-a R
 bind R screen -t '% |root:' su
+
+bindkey "^c" screen 
+bindkey "^v" eval "split -v" "focus right"  
+bindkey "^s" eval "split" "focus down" 
+bindkey "^t" title
+bindkey "^d" detach
+bindkey "^k" kill
+bindkey "^q" quit
+bindkey "^x" remove
+bindkey "^o" only
+# ctrl arrow
+bindkey "^[[1;5D" focus left
+bindkey "^[[1;5C" focus right
+bindkey "^[[1;5A" focus up
+bindkey "^[[1;5B" focus down
+# alt 
+bindkey "^[+" resize +20
+bindkey "^[-" resize -20
+bindkey "^[=" resize =
+bindkey "^l" layout select
