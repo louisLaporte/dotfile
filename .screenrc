@@ -65,4 +65,4 @@ bindkey "^[[1;5B" focus down
 bindkey "^[+" resize +20
 bindkey "^[-" resize -20
 bindkey "^[=" resize =
-bindkey "^l" layout select
+bindkey "^[l" layout select
