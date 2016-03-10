@@ -7,7 +7,7 @@ MANAGER="apt-cyg"
 BIN_PATH="/usr/local/bin"
 
 
-install_manager(){
+install_manager() {
 if [ ! -e "$BIN_PATH/$MANAGER" ]
 then
     wget raw.github.com/transcode-open/apt-cyg/master/apt-cyg
@@ -16,7 +16,7 @@ then
 fi
 }
 
-install_packages(){
+install_packages() {
     ./jq_cygwin_package.bash
 }
 set -x
