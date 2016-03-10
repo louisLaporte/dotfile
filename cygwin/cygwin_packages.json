@@ -1,0 +1,27 @@
+{
+    "cygwin":{
+        "basic":[
+            "autoconf",
+            "make",
+            "gcc-core",
+            "gdb",
+            "bash",
+            "openssh",
+            "openssl",
+            "zip",
+            "unzip",
+            "git",
+            "dos2unix",
+            "curl",
+            "wget",
+            "which"
+        ],
+        "extra":[
+            "vim",
+            "tree",
+            "bison",
+            "flex",
+            "python"
+        ]
+    }
+}

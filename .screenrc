@@ -14,6 +14,7 @@ hardstatus alwayslastline
 
 #enable scrolling
 termcapinfo xterm* ti@:te@
+altscreen on
 
 hardstatus string "%{= kG}%{g}[ %{B}$LOGNAME@%H%{g} - %n  ] [%= %{= kw}%?%-Lw%?%{B}( %n*%f%t%?(%u)%? )%{w}%?%+Lw%?%?%= %{g}] [ %{B}%c:%s%{g} ]"
 ##################################################
