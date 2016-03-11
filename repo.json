@@ -1,0 +1,53 @@
+{
+    "dotfiles":[
+    {
+        "url":"ss"
+    }
+    ], 
+    "helper":[
+        {
+        "url":"https://github.com/chrisallenlane/cheat.git",
+        "info":"cheat sheet",
+        "command":"ss"
+        }
+    ],
+    "editor": {
+        "manager":[
+        {
+            "url":"https://github.com/VundleVim/Vundle.vim.git",
+            "info":"plugin manager"
+        }
+        ],
+        "colorscheme":[
+        {
+            "url":"https://github.com/Lokaltog/vim-distinguished.git",
+            "path":"~/.vim",
+            "info":"color font"
+        },   
+        {
+            "url":"https://github.com/PProvost/vim-ps1.git",
+            "path":"~/.vim",
+            "info":"vim powershell colorscheme"   
+        }
+        ]
+    },
+    "parser":[
+        {
+        "url":"https://github.com/stedolan/jq.git",
+        "info":"color font",
+        "command":"./configure ; make && make install" 
+        }
+    ],
+    "extra":[
+    {
+        "url":"https://github.com/transcode-open/apt-cyg.git",
+        "info":"packages manger for cygwin",
+        "priority":"0"
+    },
+    {
+        "url":"https://bitbucket.org/jbianchi/powershell.git",
+        "info":"powershell wrapper",
+        "priority":"9"
+    }
+    ]
+}
