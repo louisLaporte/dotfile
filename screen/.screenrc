@@ -1,8 +1,10 @@
 shell -$SHELL
 
-term xterm-256color
-#
-# change escape caractere
+#term xterm-256color
+attrcolor b ".I"    # allow bold colors - necessary for some reason
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'   # tell screen how to set colors. AB = background, AF=foreground
+defbce on    # use current bg color for erased chars
+## change escape caractere
 escape ^a
 
 # set information in last line
@@ -17,7 +19,7 @@ termcapinfo xterm* ti@:te@
 
 hardstatus string "%{= kG}%{g}[ %{B}$LOGNAME@%H%{g} - %n  ] [%= %{= kw}%?%-Lw%?%{B}( %n*%f%t%?(%u)%? )%{w}%?%+Lw%?%?%= %{g}] [ %{B}%c:%s%{g} ]"
 ##################################################
-#		LAYOUT
+#    LAYOUT
 ##################################################
 # Default layout
 #
@@ -25,24 +27,22 @@ layout 'new' 0
 screen -t MAIN 0 bash
 # layout 1
 # -------------------------------
-#  bash(*)	|	htop
-#		|----------------
-#		|	ssh pi	
-#--------------------------------			
+#  bash(*) | top
+#--------------------------------      
 layout 'new' 1
 screen -t MAIN_1 1 bash
 select MAIN
 split -v
 focus right
-screen -t HTOP 2 htop
-select HTOP
+screen -t TOP 2 top
+select TOP
 focus left
 select MAIN_1
 
 #--------------------------------
 layout 'select' 0
 ####################################################
-#		BIND | BINDKEY
+#    BIND | BINDKEY
 ####################################################
 # shortcut for root c-a R
 bind R screen -t '% |root:' su
@@ -65,4 +65,4 @@ bindkey "^[[1;5B" focus down
 bindkey "^[+" resize +20
 bindkey "^[-" resize -20
 bindkey "^[=" resize =
-bindkey "^l" layout select
+bindkey "^[l" layout select
