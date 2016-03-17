@@ -18,37 +18,66 @@
 
 REPO_FILE="cat repo.json"
 
-#EDITOR_MANGER=$( $REPO_FILE | jq  ".editor.manager[].url ")
-#EDITOR_COLORSCHEME=$( $REPO_FILE | jq ".editor.colorscheme[].url ")
-EXTRA=$( $REPO_FILE | jq ".parser[].url" | tr -d '"')
-#PARSER=$( $REPO_FILE | jq ".extra[].url")
 
 # COLORS
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 RESET="$(tput sgr0)"
 
-echo $EXTRA
+
+:
 #___________________________
 # Array creation
-uname | grep -i cygwin &>/dev/null
+if [ -e "/usr/local/bin/jq" ]
+then
+    rm /usr/local/bin/jq 
+fi
+if [ -e "/usr/local/bin/apt-cyg" ]
+then
+    rm /usr/local/bin/apt-cyg 
+fi
 
 #___________________________
 # change separator
-
-printf "Git repo checking ...\n\n"
-
-for list in "$(echo $EXTRA)"; do
-   git ls-remote $list &>/dev/null 
-    case $? in 
-        0)
-            printf "%-40s${GREEN}%s${RESET}\n" "$list" "[OK]"
-            ;;
-        128)    
-            printf "%-40s${RED}%s${RESET}\n" "$list" "[FAIL]"
+JQ="install_jq.bash"
+printf "+ Downloading jq (json parser) binary ...\n"
+if [ ! -e "$JQ" ]
+then
+    printf "$JQ not found in current directory"
+else
+    ./$JQ
+    case $(uname -o| tr '[:upper:]' '[:lower:]') in
+        cygwin)
+            printf "+ installing packages for cygwin ...\n"
+            . ./cygwin/cygwin_manager.bash
+            install_manager
+            install_packages
             ;;
         *)
-            printf "%-40s\n" "Unknown status"
+            echo "aa"
             ;;
     esac
-done
+fi
+#: '
+#PARSER=$( $REPO_FILE | jq ".parser[].url" | tr -d '"' | tr -d "\r")
+#EXTRA=$( $REPO_FILE | jq ".extra[].url" | tr -d '"' | tr -d "\r")
+#EDITOR_MANGER=$( $REPO_FILE | jq  ".editor.manager[].url ")
+#EDITOR_COLORSCHEME=$( $REPO_FILE | jq ".editor.colorscheme[].url ")
+#
+#printf "Git repo checking ...\n\n"
+#
+#for list in "$(echo $PARSER)" "$(echo $EXTRA)"; do
+#    git ls-remote $list &>/dev/null 
+#    case $? in 
+#        0)
+#            printf "%-40s${GREEN}%s${RESET}\n" "$list" "[OK]"
+#            ;;
+#        128)    
+#            printf "%-40s${RED}%s${RESET}\n" "$list" "[FAIL]"
+#            ;;
+#        *)
+#            printf "%-40s\n" "Unknown status"
+#            ;;
+#    esac
+#done
+#'

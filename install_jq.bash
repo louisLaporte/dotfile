@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 BIN_PATH="/usr/local/bin"
+JQ="${BIN_PATH}/jq"
 
-rm ${BIN_PATH}/jq
 
-
-if [ ! -e "$BIN_PATH/$JQ" ]
+if [ ! -e $JQ ]
 then
     case $(uname -o| tr '[:upper:]' '[:lower:]') in
         cygwin)
@@ -13,8 +12,7 @@ then
             _jqCygwin=$(basename ${_jqUrlCygwin} | cut -d "-" -f1)
             wget $_jqUrlCygwin -O ${BIN_PATH}/${_jqCygwin} &>/dev/null
             chmod +x ${BIN_PATH}/${_jqCygwin}
-            ls -l ${BIN_PATH}
-            which ${_jqCygwin}
+            printf "moving file to %s \n\n" $(which ${_jqCygwin})
             ;;
         *)
             echo "aa"

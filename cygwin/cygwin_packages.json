@@ -3,7 +3,7 @@
         "basic":[
             "autoconf",
             "make",
-            "cmake"
+            "cmake",
             "automake",
             "gcc-core",
             "gcc-g++",
@@ -22,7 +22,7 @@
             "findutils",
             "coreutils",
             "binutils",
-            "utils-linux"
+            "util-linux"
         ],
         "extra":[
             "vim",

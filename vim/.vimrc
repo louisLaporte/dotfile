@@ -4,6 +4,12 @@ let MiniVimVersion = 1.2
 let UseCustomKeyBindings = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+imap ^[OA <ESC>ki
+imap ^[OB <ESC>ji
+imap ^[OC <ESC>li
+imap ^[OD <ESC>hi
+" powershell
+let g:ps1_nofold_blocks = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """ Plugins
 set nocompatible              " be iMproved, required

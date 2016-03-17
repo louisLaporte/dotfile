@@ -1,53 +1,68 @@
-{
-    "dotfiles":[
+[
     {
-        "url":"ss"
-    }
-    ], 
-    "helper":[
+    "category-level-0":"dotfile",
+        "category-level-1":
         {
-        "url":"https://github.com/chrisallenlane/cheat.git",
-        "info":"cheat sheet",
-        "command":"ss"
+           "url":"ss"
         }
-    ],
-    "editor": {
-        "manager":[
+    }, 
+    {
+    "category-level-0":"helper",
+        "category-level-1":
         {
-            "url":"https://github.com/VundleVim/Vundle.vim.git",
-            "info":"plugin manager"
+            "url":"https://github.com/chrisallenlane/cheat.git",
+            "info":"cheat sheet",
+            "command":"ss"
         }
-        ],
-        "colorscheme":[
-        {
-            "url":"https://github.com/Lokaltog/vim-distinguished.git",
-            "path":"~/.vim",
-            "info":"color font"
-        },   
-        {
-            "url":"https://github.com/PProvost/vim-ps1.git",
-            "path":"~/.vim",
-            "info":"vim powershell colorscheme"   
-        }
-        ]
     },
-    "parser":[
-        {
-        "url":"https://github.com/stedolan/jq.git",
-        "info":"color font",
-        "command":"./configure ; make && make install" 
+     {
+     "category-level-0":"editor",
+        "category-level-1":{
+            "manager":[
+            {
+                "url":"https://github.com/VundleVim/Vundle.vim.git",
+                "info":"plugin manager"
+            }
+            ],
+            "colorscheme":[
+            {
+                "url":"https://github.com/Lokaltog/vim-distinguished.git",
+                "path":"~/.vim",
+                "info":"color font"
+            },   
+            {
+                "url":"https://github.com/PProvost/vim-ps1.git",
+                "path":"~/.vim",
+                "info":"vim powershell colorscheme"   
+            }
+            ]
         }
-    ],
-    "extra":[
-    {
-        "url":"https://github.com/transcode-open/apt-cyg.git",
-        "info":"packages manger for cygwin",
-        "priority":"0"
     },
-    {
-        "url":"https://bitbucket.org/jbianchi/powershell.git",
-        "info":"powershell wrapper",
-        "priority":"9"
+     {
+     "category-level-0":"parser",
+        "category-level-1":{
+            {
+                "url":"https://github.com/stedolan/jq.git",
+                "info":"color font",
+                "command":"./configure ; make && make install" 
+            }
+        }
+    },
+     {
+     "category-level-0":"extra",
+        "category-level-1":{
+            "manager":
+            {
+                "url":"https://github.com/transcode-open/apt-cyg.git",
+                "info":"packages manger for cygwin",
+                "priority":"0"
+            }
+            "wrapper":
+            {
+                "url":"https://bitbucket.org/jbianchi/powershell.git",
+                "info":"powershell wrapper",
+                "priority":"9"
+            }
+        }
     }
-    ]
-}
+]
