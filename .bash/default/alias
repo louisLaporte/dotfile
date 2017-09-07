@@ -1,0 +1,73 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+alias .b="source ~/.bashrc"
+# Alias's to modified commands
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -v'
+alias mkdir='mkdir -p'
+alias ps='ps auxf'
+alias cls='clear'
+alias sl="ls"
+alias ll="ls -lh --color=auto"
+alias lh="ls -ld  ~/.[^.]*"
+alias lsl='ls -lbhF'
+alias hgrep='history | grep '
+
+alias info="info --vi-keys"
+alias less='less -R'
+alias pman="pinfo -m"
+# Change directory aliases
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+# alias chmod commands
+alias cx="chmod +x "
+alias 000='chmod -R 000'
+alias 646='chmod -R 644'
+alias 666='chmod -R 666'
+alias 755='chmod -R 755'
+alias 777='chmod -R 777'
+
+# Search running processes
+alias topcpu="/bin/ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
+# Count all files (recursively) in the current folder
+#alias countfiles="for t in files links directories; do echo $(find . -type \${t:0:1}) | wc -l \$t; done 2> /dev/null"
+# Show current network connections to the server
+#alias ipview="netstat -anpl | grep :80 | awk {'print \$5'} | cut -d\":\" -f1 | sort | uniq -c | sort -n | sed -e 's/^ *//' -e 's/ *\$//'"
+
+# Alias's for safe and forced reboots
+alias rebootsafe='sudo shutdown -r now'
+alias rebootforce='sudo shutdown -r -n now'
+
+# Alias's to show disk space and space used in a folder
+alias tree='tree -CAhF --dirsfirst'
+alias treed='tree -CAFd'
+alias diskspace="du -S | sort -n -r |more"
+alias folders='du -h --max-depth=1'
+alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -rn'
+alias mountedinfo='df -hT'
+alias f_size='find . -type f -size +50000k -exec ls -lh {} \; 2>/dev/null | awk '"'"'{ printf("%-100s %s \n", $9, $5) }'"'"''
+alias d_size='du -h -d 1 2>/dev/null  | sort -h -r | head -11'
+
+# Alias's for archives
+alias mktar='tar -cvf'
+alias mkbz2='tar -cvjf'
+alias mkgz='tar -cvzf'
+alias untar='tar -xvf'
+alias unbz2='tar -xvjf'
+alias ungz='tar -xvzf'
+
+# SHA1
+alias sha1='openssl sha1'
+
+alias wwatch='watch -c bash -i -c'
+
+alias dw="cd ~/Downloads"
+alias dc="cd ~/Documents"
+alias .p="cd ${HOME}/project/python"
+alias cinfo="sudo dmidecode -t processor | grep Speed"
+

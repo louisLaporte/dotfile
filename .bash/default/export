@@ -1,0 +1,33 @@
+#!/bin/bash
+
+export TERM=xterm-256color
+export EDITOR=/usr/bin/vim
+export VISUAL=/usr/bin/vim
+#
+# -c = clear screen
+# -i = case insensitive
+# -M = print line number
+# -R = ANSI COLOR escaping
+# -N = numberize lines
+# -S = trnucated line longer than screen width
+# -L = no-lessopen file
+# -J = when searching pattern display line match
+# --shift = rigth arrow move colums range to 4
+# -~ = remove ~ at end of file
+#export PAGER="less -cisMNSR -~ --shift 4"
+export PAGER="less -cisMR --shift 4"
+
+# To have colors for ls and all grep commands such as grep, egrep and zgrep
+export CLICOLOR=1
+# Expand the history size
+export HISTFILESIZE=10000
+export HISTSIZE=2000
+
+# Don't put duplicate lines in the history and do not add lines that start with a space
+export HISTCONTROL=erasedups:ignoredups
+
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"/usr/lib64/pkgconfig/"
+export PKG_CONFIG_PATH
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH

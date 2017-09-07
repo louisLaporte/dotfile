@@ -1,0 +1,92 @@
+#!/bin/bash
+
+source ${LL_CONFIG_UTILS}/colors
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  __ps
+#   DESCRIPTION:  Init prompts
+#    PARAMETERS:  prompt rank
+#       RETURNS:
+#	   TEST:  Unknown parameter --> Ok
+#	   TEST:  Parameter not equal 1 --> Ok
+#-------------------------------------------------------------------------------
+__ps ()
+{
+	if [ $# -ne 1 ]
+	then
+		ERROR "You must specify one parameter"
+		return
+	fi
+	case $1 in
+	1)
+		#$(( ( RANDOM % 10 )  + 1 ))
+		#declare g=$(git symbolic-ref --short HEAD 2>/dev/null)
+		#if [ -n "$SSH_CONNECTION" ]
+		#then
+		#	export PS1='\[\e[1;33m\][\u@\h \W]\$\[\e[0m\] '
+		#else
+		#	if [ -n ${g} ]
+		#	then
+		#		export PS1="${LIGHT_GREEN}[\u@\h \W]${BLUE}${g}\
+#${GREEN}\$${RESET} "
+#			else
+				export PS1="\[\e[93m\][\u@\h \W]\[\e[31m\]\$\[\e[0m\] "
+#			fi
+#		fi
+	;;
+	# Used for bash continuation
+	#2)
+	#	export PS2="${LIGHT_RED}> ${RESET}"
+	#;;
+	## Used for select command
+	#3)
+	#	export PS3="${LIGHT_BLUE}> ${RESET}"
+	#;;
+	## Used for set -x
+	#4)
+	#	export PS4="${GREEN}> ${RESET}$(basename ${BASH_SOURCE}):${LINENO}:${FUNCNAME}: "
+	#;;
+	#*)
+	#	ERROR "Unkown parameter $1"
+	#;;
+	esac
+}	# ----------  end of function __ps  ----------
+
+__export_ps()
+{
+	for i in {1..4}
+	do
+		__ps ${i}
+	done
+}
+#PROMPT_COMMAND='printf "\033]0;${PWD}\007"; __export_ps'
+PROMPT_COMMAND='__export_ps'
+export PROMPT_COMMAND
+
+# \a	an ASCII bell character (07)
+# \d	the date in "Weekday Month Date" format (e.g., "Tue May 26")
+# \]	end a sequence of non-printing characters
+# \e	an ASCII escape character (033)
+# \h	the hostname up to the first `.'
+# \H	the hostname
+# \j	the number of jobs currently managed by the shell
+# \l	the basename of the shell's terminal device name
+# \n	newline
+# \r	carriage return
+# \s	the name of the shell, the basename of $0 (the portion following the final slash)
+# \t	the current time in 24-hour HH:MM:SS format
+# \T	the current time in 12-hour HH:MM:SS format
+# \@	the current time in 12-hour am/pm format
+# \A	the current time in 24-hour HH:MM format
+# \u	the username of the current user
+# \v	the version of bash (e.g., 2.00)
+# \V	the release of bash, version + patchelvel (e.g., 2.00.0)
+# \w	the current working directory
+# \W	the basename of the current working directory
+# \!	the history number of this command
+# \#	the command number of this command
+# \$	if the effective UID is 0, a #, otherwise a $
+#\nnn	the character corresponding to the octal number nnn
+# \\	a backslash
+# \[	begin a sequence of non-printing characters, which could be used to
+#	embed a terminal control sequence into the prompt

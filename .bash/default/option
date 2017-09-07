@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
+shopt -s checkwinsize
+
+# Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
+# add PWD in title
+shopt -s histappend

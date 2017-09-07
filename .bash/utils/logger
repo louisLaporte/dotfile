@@ -1,0 +1,86 @@
+#!/bin/bash
+
+source ~/.bash/utils/colors
+#OPTION
+declare SHOW_DATE=$1
+# false = 0
+# true = 1
+declare LOG_ENABLE=1
+declare LOG_FILE_ENABLE=0
+declare LOG_PATH=$(dirname ${BASH_SOURCE[1]})
+declare LOG_DIR="log"
+declare LOG_FILE_NAME="${LOG_PATH}/${LOG_DIR}/test.log"
+declare DATE=$(date +"%d/%m/%y %H:%M:%S")
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  __create_log_file
+#   DESCRIPTION: Create a log dir and a log file
+#    PARAMETERS:
+#       RETURNS:
+#         TODO : rotate log files
+#-------------------------------------------------------------------------------
+__create_log_file ()
+{
+	[[  -d ${LOG_DIR} ]]  || (echo "create directory ${LOG_PATH}/${LOG_DIR} "; mkdir -p ${LOG_DIR})
+	[[ -f ${LOG_FILE_NAME} ]] || (echo "create file ${LOG_FILE_NAME}"; touch ${LOG_FILE_NAME})
+}	# ----------  end of function __create_log_file  ----------
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  __LOG
+#   DESCRIPTION: Create w/ or w/o date and redirect in stdout or in a file
+#    PARAMETERS: N/A
+#       RETURNS: N/A
+#          TEST: --no-time --> OK
+#-------------------------------------------------------------------------------
+__log ()
+{
+        [[ ${LOG_ENABLE} -eq 1 ]] || return
+        #echo "LOG_FILE_ENABLE :" ${LOG_FILE_ENABLE}
+        [[ ${LOG_FILE_ENABLE} -eq 1 ]] && __create_log_file
+	declare color=$1
+	declare msg="$2"
+        declare lineno=$3
+    	(if [[ ! "${SHOW_DATE}" == "--no-time" ]]; then
+                printf "[%-17s]"  "${DATE}"
+        fi
+        printf "[%-16s]"   "${color}${FUNCNAME[1]}${RESET}"
+        printf "[%-20s]\t" "${BASH_SOURCE[2]}|${FUNCNAME[2]}:${lineno}"
+        printf "%s\n" "$msg") | ([[ ${LOG_FILE_ENABLE} -eq 1 ]] && xargs >> ${LOG_FILE_NAME} || cat)
+}	# ----------  end of function __LOG  ----------
+
+INFO ()
+{
+	__log ${GREEN} $1 ${BASH_LINENO}
+}	# ----------  end of function INFO  ----------
+
+DEBUG ()
+{
+	__log ${MAGENTA} $1 ${BASH_LINENO}
+}	# ----------  end of function DEBUG  ----------
+
+WARNING ()
+{
+	__log ${YELLOW} $1 ${BASH_LINENO}
+}	# ----------  end of function WARNING  ----------
+
+ERROR ()
+{
+	__log ${RED} $1 ${BASH_LINENO}
+}	# ----------  end of function ERROR  ----------
+
+function __bash_info
+{
+    	printf '=%.0s' {1..40}
+	echo
+	echo "                 INFO"
+    	printf '=%.0s' {1..40}
+	echo
+    	echo "         PID:" ${BASHPID}
+    	echo "     Version:" ${BASH_VERSION}
+    	#echo ${BASH_VERSINFO[0]}                       #The major version number (the release).
+    	#echo ${BASH_VERSINFO[1]}                       #The minor version number (the version).
+    	#echo ${BASH_VERSINFO[2]}                       #The patch level.
+    	#echo ${BASH_VERSINFO[3]}                       #The build version.
+    	#echo ${BASH_VERSINFO[4]}                       #The release status (e.g., beta1).
+    	echo "Machine type:" ${BASH_VERSINFO[5]}       #The value of MACHTYPE.
+}

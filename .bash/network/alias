@@ -1,0 +1,15 @@
+#!/bin/bash
+
+alias ping='ping -c 10'
+alias pingt="ping 8.8.8.8"
+alias pingg="ping google.com"
+
+alias wifi_down="sudo ip link set dev wlp2s0 down"
+alias wifi_up="sudo ip link set dev wlp2s0 up; sudo systemctl restart NetworkManager"
+alias wifi_locate="ls /etc/sysconfig/network-scripts"
+alias wifi_scan="sudo arp-scan --interface=wlp2s0 --localnet"
+alias eth_scan="sudo arp-scan --interface=enp0s20u2u2 --localnet"
+
+alias current_interface="ip route get 8.8.8.8 | awk '{print \$5; exit}'"
+# Show open ports
+alias openports='netstat -nape --inet'

@@ -1,0 +1,286 @@
+#!/usr/bin/env bash
+################################################################################
+#                                                                              #
+# this function show man paragraph                                             #
+# TODO=remove only double blank line                                                                             #
+################################################################################
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  mans
+#   DESCRIPTION:  list man section
+#    PARAMETERS:  $1 =command ; $2=section number
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+#mans ()
+#{
+#    usage () {
+#    echo "You must specify a command name "
+#    echo "Ex: mans ls"
+#    echo "Ex: mans ls 1"
+#    }
+#if test $# -lt 1 
+#then
+#    usage
+#    unset -f usage
+#else    
+#    IFS='|'
+#    declare -a arr=($(man $1 | sed -n '/^[[:upper:]]/p' |  sed -e '/(/d'  |  sed 's/$/|/'| tr -d '\n'))
+#   
+#    #echo $# $@ 
+#    if test $# -lt 2
+#    then
+#        for ((i=0; i<${#arr[@]};i++))
+#        do
+#            printf "%-40s\t%i\n" ${arr[$i]} $(($i+1))
+#        done
+#    elif test $# -eq 2 -a $2 -gt ${#arr[@]} -o $2 -eq 0
+#    then
+#        usage
+#        unset -f usage
+#    else
+#        #echo "${arr[$(($2-1))]} -- ${arr[$(($2))]}"
+#        ## get between pattern | remove last pattern | remove blank lines
+#        if test $2 -eq ${#arr[@]}
+#        then
+#            man $1 | sed -n "/^${arr[$(($2-1))]}/,/*$/p" | sed -e '$d' | sed '/^$/d' | less -iscMR -~
+#        else
+#            man $1 | sed -n "/^${arr[$(($2-1))]}/,/^${arr[$(($2))]}/p" | sed -e '$d' | sed '/^$/d' | less -iscMR -~
+#        fi
+#    fi
+#    IFS=' '
+#fi
+#    
+#}	# ----------  end of function mans  ----------
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  bbash
+#   DESCRIPTION:  list of bash builtin commands 
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+builtin-bash_ ()
+{
+    mans bash $(mans bash | grep -i builtin | sed 's/[^0-9]*//g') | sed '
+    s/ \{8\}.*//
+    /\[/!d
+    /^$/d
+    s/^[ \t]*//
+    s/ .*//
+    /\[/d
+    ' | sort -u |  less -cN
+        
+}	# ----------  end of function bbash  ----------
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  extract
+#   DESCRIPTION:  Extracts any archive(s) (if unp isn't installed)
+#    PARAMETERS:  File to extract
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+extract ()
+{
+    for archive in $*; do
+        if [ -f $archive ] ; then
+            case $archive in
+                *.rar)	     unrar e $archive	  ;;
+                *.tar.bz2)   tar xvjf $archive    ;;
+                *.tar.gz)    tar xvzf $archive    ;;
+                *.bz2)       bunzip2 $archive     ;;
+                *.rar)       rar x $archive       ;;
+                *.gz)        gunzip $archive      ;;
+                *.tar)       tar xvf $archive     ;;
+                *.tbz2)      tar xvjf $archive    ;;
+                *.tgz)       tar xvzf $archive    ;;
+                *.zip)       unzip $archive       ;;
+                *.Z)         uncompress $archive  ;;
+                *.7z)        7za x $archive        ;;
+                *.tar.xz)    tar xf $archive	  ;; 
+                *)           echo "don't know how to extract '$archive'..." ;;
+            esac
+        else
+            echo "'$archive' is not a valid file!"
+        fi
+    done
+    
+}	# ----------  end of function extract  ----------
+
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  network
+#   DESCRIPTION:  
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+
+network ()
+{
+    declare external=$(curl ipecho.net/plain 2>/dev/null)
+    printf "\e[0;33mEXTERNAL ROUTER IP :\e[0;32m %s\e[0;37m\n" ${external}
+    declare component=($(ifconfig |grep -e "^[a-z].*: " | awk '{print $1}'))
+    declare ip=($(ifconfig |grep -e "inet " | awk '{print $2}'))
+    for (( i=0; i < ${#component[@]}; i++ ))
+    do
+      printf "\e[0;33mHOST IP : \e[0;32m %9s %-9s\e[0;37m\n" ${component[$i]} ${ip[$i]}
+    done
+    
+}	# ----------  end of function network  ----------
+
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  _systemctl
+#   DESCRIPTION:  
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+_systemctl ()
+{
+
+    declare esc=$(printf '\033')
+
+    systemctl list-units | grep running | \
+    sed " s/\.service/${esc}[32m&${esc}[0m/ 
+        s/\.socket/${esc}[33m&${esc}[0m/ "
+    
+}	# ----------  end of function _systemctl  ----------
+
+_sys ()
+{
+    declare esc=$(printf '\033')
+    systemctl -t service | grep running | sed "
+    s/\(.*\)\(\.\)/${esc}[32m\1${esc}[0m\2/
+                                            "
+}
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  colors16
+#   DESCRIPTION:  
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+
+colors16 ()
+{
+    # This program is free software. It comes without any warranty, to
+    # the extent permitted by applicable law. You can redistribute it
+    # and/or modify it under the terms of the Do What The Fuck You Want
+    # To Public License, Version 2, as published by Sam Hocevar. See
+    # http://sam.zoy.org/wtfpl/COPYING for more details.
+
+    #Background
+    for clbg in {40..47} {100..107} 49 ; do
+        #Foreground
+        for clfg in {30..37} {90..97} 39 ; do
+            #Formatting
+            for attr in 0 1 2 4 5 7 ; do
+                #Print the result
+                echo -en "\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \e[0m"
+            done
+            echo #Newline
+        done
+    done
+    
+}	# ----------  end of function colors16  ----------
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  colors256
+#   DESCRIPTION:  display 256 colors
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+colors256 () {
+# This program is free software. It comes without any warranty, to
+# the extent permitted by applicable law. You can redistribute it
+# and/or modify it under the terms of the Do What The Fuck You Want
+# To Public License, Version 2, as published by Sam Hocevar. See
+# http://sam.zoy.org/wtfpl/COPYING for more details.
+ 
+for fgbg in 38 48 ; do #Foreground/Background
+    for color in {0..256} ; do #Colors
+        #Display the color
+        echo -en "\e[${fgbg};5;${color}m ${color}\t\e[0m"
+        #Display 10 colors per lines
+        if [ $((($color + 1) % 10)) == 0 ] ; then
+            echo #New line
+        fi
+    done
+    echo #New line
+done
+    
+}	# ----------  end of function colors256  ----------
+
+_tmux_colour()
+{
+for i in {0..255}; do
+    printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
+done
+}
+
+
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  find_bind
+#   DESCRIPTION:  
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+_find_bind ()
+{
+
+declare esc=$(printf '\033')
+
+read -p $'\e[34mfind\e[0m : ' -e find_pattern 
+#declare find_pattern="woman"
+#echo ${find_pattern}
+find . -iname "*${find_pattern}*" 2>/dev/null | \
+sed -r "s/(.*\/)(.*)/\1${esc}[32m\2${esc}[0m/" | less -eN 
+echo
+}	# ----------  end of function find_bind  ----------
+
+send_to_pane () {
+    # send_to_pane 1 "ls"
+    declare panes_number=$(tmux list-panes | tail -n 1 | sed -r  's/^[^0-9]*([0-9]+).*/\1/')
+    if [ $# -lt 2 ] 
+    then
+        echo "You must specify a pane (tmux list-panes)"
+        echo "You must specify a command"
+    elif [ $1 -eq 1 ] && [ ${panes_number} -lt "$1" ]
+    then
+        tmux split-window -h
+        tmux send-keys -t $1 "${@:2 }" Enter    
+    elif [ ${panes_number} -lt "$1" ]
+    then
+        echo "You must specify on of the following panes"
+        tmux list-panes 
+    else
+        tmux send-keys -t $1 "${@:2 }" Enter    
+    fi
+}
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  _info
+#   DESCRIPTION:  info for sensors temperature, CPU speed etc, and battery
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+_info ()
+{
+    declare esc=$(printf "\033")
+    echo  "==============================" 
+    echo  "           SENSOR             "
+    echo  "==============================" 
+    sensors
+
+    echo  "==============================" 
+    echo  "           CPU                "
+    echo  "==============================" 
+    lscpu | grep -E "^CPU|name|cache|Virtualization" | sort
+
+    echo  "==============================" 
+    echo  "           BATTERY            "
+    echo  "==============================" 
+    #cat /sys/class/power_supply/BAT0/*
+    upower -i /org/freedesktop/UPower/devices/battery_BAT0 | \
+	grep -E "voltage|energy|percentage|time" | sort | sed 's/^    //g'
+
+}	# ----------  end of function _info  ----------
+
