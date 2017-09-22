@@ -1,5 +1,3 @@
-" Details on : https://github.com/sd65/MiniVim
-let MiniVimVersion = 1.2
 let UseCustomKeyBindings = 1
 let $PAGER=''
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -71,7 +69,7 @@ set smartcase " ... but smart
 let &showbreak="\u21aa " " Show a left arrow when wrapping text
 set encoding=utf-8  " The encoding displayed.
 set fileencoding=utf-8  " The encoding written to file.
-set encoding=utf-8
+set t_Co=256
 set synmaxcol=300 " Don't try to highlight long lines
 set guioptions-=T " Don't show toolbar in Gvim
 set nosol " on G select only column
@@ -79,11 +77,14 @@ set clipboard=unnamedplus
 set colorcolumn=80
 set cmdheight=1
 set completeopt=longest,menuone
+set wildmode=longest,list,full
+set wildmenu
+
 " Open all cmd args in new tabs
 " execute ":silent :tab all" 
 set shell=bash\ -lc
 set autoread
-set paste
+"set paste
 
 """ Prevent lag when hitting escape
 set ttimeoutlen=0
@@ -104,7 +105,6 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 "    \ set fileformat=unix
 """ Flag unnecessary space
 "au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
 
 
 " Backup_and_swap: {{{1
@@ -223,9 +223,9 @@ nmap  <silent> <C-Right> :wincmd l<CR>
 " nmap  <silent> <C-s>     :source %<CR>
 
 " Usefull shortcuts to enter insert mode
-nnoremap <Enter> i<Enter>
-nnoremap <Backspace> i<Backspace>
-nnoremap <Space> i<Space>
+"nnoremap <Enter> i<Enter>
+"nnoremap <Backspace> i<Backspace>
+"nnoremap <Space> i<Space>
 
 " :UndoCloseTab - To undo close tab
 " command UndoCloseTab call OpenLastBufferInNewTab()
@@ -327,34 +327,42 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-"   Used plugins{{{2
+
+
 "  Plugin 'file:///home/louis/.vim/vim/plugin/test.vim'
  Plugin 'VundleVim/Vundle.vim'
  Plugin 'hynek/vim-python-pep8-indent'
  Plugin 'tpope/vim-fugitive'
- " Plugin 'mbbill/code_complete'
- Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
- Plugin 'ervandew/supertab'
-" Plugin 'xolox/vim-misc'
-" Plugin 'xolox/vim-easytags'
-" Plugin 'abudden/taghighlight-automirror'
- " Plugin 'davidhalter/jedi'
-" }}}2
+ Plugin 'mbbill/code_complete'
+ Plugin 'vim-airline/vim-airline'
+ Plugin 'vim-airline/vim-airline-themes'
+ Plugin 'scrooloose/nerdtree'
+ Plugin 'andviro/flake8-vim'
+ Plugin 'davidhalter/jedi-vim'
 
-" Unused Plugins{{{2
-" Plugin 'scrooloose/nerdtree'
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
-" Plugin 'majutsushi/tagbar'
-" Plugin 'junegunn/vim-easy-align'
-" Plugin 'terryma/vim-multiple-cursors'
-
-" Plugin 'Valloric/YouCompleteMe'
-" Plugin 'SirVer/ultisnips'
-" Plugin 'Shougo/deoplete.nvim'
-" }}}2
 call vundle#end()       " required
-let g:Powerline_symbols = 'fancy'
 let g:easytags_autorecurse = 1
 
+" air-line
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+let g:airline_symbols.space = "\ua0"
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+let g:airline#extensions#tabline#enabled = 1
+
+let g:jedi#completions_command = "<C-Space>"
+
+map <C-n> :NERDTreeToggle<CR>
